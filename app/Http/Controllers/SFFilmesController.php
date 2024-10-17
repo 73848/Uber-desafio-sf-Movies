@@ -14,6 +14,7 @@ class SFFilmesController extends Controller
        // $token = 'ji31VSqbvKyZYDU8sslnVXJ3r';
 
         $response = Http::get('https://data.sfgov.org/resource/yitu-d5am.json?$limit=10&$$app_token=ji31VSqbvKyZYDU8sslnVXJ3r');
-        return $response->json();
+        $response = json_encode($response->json());
+        return $response;
     }
 }
