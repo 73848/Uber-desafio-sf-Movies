@@ -17,4 +17,5 @@ class SFFilmesController extends Controller
         $response = json_encode($response->json());
         return $response;
     }
+    
 }
