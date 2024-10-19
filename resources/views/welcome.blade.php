@@ -2,8 +2,7 @@
 <html>
 <body>
 
-<h1>My First Google Map</h1>
-
+<br>
 <div id="googleMap" style="width:75%;height:400px;
   margin: 0 auto; 
   padding: 20px;
@@ -25,7 +24,7 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCs8Fx2_N0gwM-B2rMSMUOow-e889zm6To&callback=myMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{env("GOOGLE_MAPS_API_KEY")}}&callback=myMap"></script>
 
 </body>
 </html>
