@@ -20,26 +20,38 @@ class SFFilmesController extends Controller
         return $response;
     }
     public function getDataFromApiWithLocalName(){
-        $response = Http::timeout(5)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
-            '$$app_token'=>env("SODA_API_KEY"),
-            'title'=> 'Chan is Missing'
-        ]);     
-        $response = json_encode($response->json());
-        return $response; 
+        try {
+            $response = Http::timeout(5)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
+                '$$app_token'=>env("SODA_API_KEY"),
+                'title'=> 'Chan is Missing'
+            ]);     
+            $response = json_encode($response->json());
+            return $response; 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+       
     }
     public function getingGeoLocationFromAdress(){
-        $url = "https://nominatim.openstreetmap.org/search?";
-        $street = 'Union St';
-        $response = Http::timeout(5)->get($url, 
-        [
-            'format'=> 'json',
-            'city'=> 'San Francisco',
-            'country'=> 'United States of America',
-            'state'=>'California',
-            'street'=> $street
-        ]
-    );
-    return $response;
+        try {
+            $url = "https://nominatim.openstreetmap.org/search?";
+            $street = 'Union St';
+            $response = Http::timeout(5)->withHeaders([
+                'User-Agent' => 'uber-desafio/1.0 (clemesonsilva736@gmail.com)'
+            ])->get($url, 
+            [
+                'format'=> 'json',
+                'city'=> 'San Francisco',
+                'country'=> 'United States of America',
+                'state'=>'California',
+                'street'=> $street
+            ]
+        );
+        $response = $response->collect()->first();
+        return $response;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
     
 }
