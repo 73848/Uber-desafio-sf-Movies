@@ -11,8 +11,11 @@
 <div style=" 
 width:75%;margin: 0 auto; 
   padding: 20px;">
+  <form action="/geolocation">
     <label for="">Search</label>
-    <input type="text" id="search">
+    <input type="text" id="search" name="adress">
+  
+  </form>
 </div>
 <script>
 function myMap() {

@@ -32,8 +32,9 @@ class SFFilmesController extends Controller
         }
        
     }
-    public function getingGeoLocationFromAdress(){
+    public function getingGeoLocationFromAdress(Request $request){
         try {
+            $adress = $request->validate(['adress'=>'required']);
             $url = "https://nominatim.openstreetmap.org/search?";
             $street = 'Union St';
             $response = Http::timeout(5)->withHeaders([
@@ -44,7 +45,7 @@ class SFFilmesController extends Controller
                 'city'=> 'San Francisco',
                 'country'=> 'United States of America',
                 'state'=>'California',
-                'street'=> $street
+                'street'=> $adress
             ]
         );
         $response = $response->collect()->first();
