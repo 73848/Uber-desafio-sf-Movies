@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Http;
 class SFFilmesController extends Controller
 {
     public function getDataFromApi(){
-        $limit = 20000;
+        $limit = 2;
         $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
-          //  '$limit'=>$limit ,
+           '$limit'=>$limit ,
             '$$app_token'=>env("SODA_API_KEY"),
         ]);  
         $response = json_encode($response->json());
