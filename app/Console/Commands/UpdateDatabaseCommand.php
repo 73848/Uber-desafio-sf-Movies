@@ -29,10 +29,9 @@ class UpdateDatabaseCommand extends Command
     {
         $limit = 2;
         $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
-           '$limit'=>$limit ,
+            '$limit'=>$limit ,
             '$$app_token'=>env("SODA_API_KEY"),
         ]);  
-      //  $response = json($response->json());
       for( $i=0; $i< $limit; $i++){
           $title = $response->json()[$i]['title'];
           $location = $response->json()[$i]['locations'];

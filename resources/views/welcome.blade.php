@@ -13,14 +13,15 @@ width:75%;margin: 0 auto;
   padding: 20px;">
   <form action="/geolocation">
     <label for="">Search</label>
-    <input type="text" id="search" name="adress">
+    <input type="text" id="search" name="search">
   
+    <button type="submit">Submit</button>
   </form>
 </div>
 <script>
 function myMap() {
 var mapProp= {
-  center:new google.maps.LatLng(51.508742,-0.120850),
+  center:new google.maps.LatLng(37.7749,-122.4194),
   zoom:5,
 };
 var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);

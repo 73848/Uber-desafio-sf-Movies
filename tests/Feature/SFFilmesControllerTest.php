@@ -15,7 +15,7 @@ class SFFilmesControllerTest extends TestCase
     public function test_json_format_are_returned_corretly(): void
     {
         $SfController = new SFFilmesController();
-        $response = $SfController->getDataFromApi();
+        $response = $SfController->getDataFromApiWithLocalName();
 
         $this->assertJson($response);
     }
