@@ -10,7 +10,7 @@ class SearchController extends Controller
     public function search(Request $request){
         $input = $request->validate(['search'=>'required']);
         $result = DB::table('movies')->where('title', $input)->orWhere('locations',$input)->get();
-        $resultJson = json_encode($result);
-        return $resultJson;
+        $data = json_encode($result);
+        return response()->json(['movies'=>$data]);
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <body>
 
 <br>
@@ -17,6 +18,9 @@ width:75%;margin: 0 auto;
   
     <button type="submit">Submit</button>
   </form>
+  <div id="moviesList">
+
+  </div>
 </div>
 <script>
 function myMap() {
@@ -26,6 +30,38 @@ var mapProp= {
 };
 var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
+$(document).ready(function () {
+  $("#search").on("keyup", function () {
+    /* 
+    $("#result").html(search) ; 
+    */
+   var search = $("#search").val(); 
+    if(search != ''){
+      $.ajax({
+        type: "GET",
+        url: "/search",
+        data: {search:search},
+        dataType: "JSON",
+        success: function (response) {
+          var movies = response.title;
+          var moviesList = $("#movieList");
+          moviesList.empty();
+  
+         /*  movies.forEach(title => {
+            moviesList.append('<p>' + movies.title + '</p>');
+          }); */
+          console.log(movies.title);
+        }
+      });
+
+
+    }
+  
+    });
+  
+});
+
+
 </script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{env("GOOGLE_MAPS_API_KEY")}}&callback=myMap"></script>

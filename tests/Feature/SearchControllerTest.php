@@ -14,15 +14,13 @@ class SearchControllerTest extends TestCase
     /**
      * A basic feature test example.
      */
-    use RefreshDatabase;
+   // use RefreshDatabase;
 
     public function test_url_response_a_json(): void
     {
         $request = FacadesRequest::create('/search', 'GET', ['search'=>'Experiment in Terror']);
         $movieController = new SearchController();
         $response = $movieController->search($request);
-
-
-        $this->assertJson($response);
+        $this->assertJson($response->getData()->movies);
     }
 }
