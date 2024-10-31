@@ -47,13 +47,15 @@ $(document).ready(function () {
       $.ajax({
         type: "GET",
         url: '/search',
+        dataType: "json",
         data: {'search':search},
         success: function (data) {
           var movies = data.title;
           var moviesList = $("#movieList");
           moviesList.empty();
-  
-         console.log(data)
+          var movies = JSON.parse(data.movies);
+          console.log(movies[0].title);
+
         },
     error: function(data){
         console.log(data);

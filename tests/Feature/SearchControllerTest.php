@@ -18,10 +18,10 @@ class SearchControllerTest extends TestCase
 
     public function test_url_response_a_json(): void
     {
-        $request = FacadesRequest::create('/search', 'GET', ['search'=>'Experiment in Terro']);
+        $request = FacadesRequest::create('/search', 'GET', ['search'=>'Experi']);
         $movieController = new SearchController();
         $response = $movieController->search($request);
-        dump($response->getData()->movies);
+        var_dump($response->getData()->movies);
         $this->assertJson($response->getData()->movies);
     }
 }
