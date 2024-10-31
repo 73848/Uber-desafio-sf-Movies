@@ -30,27 +30,31 @@ var mapProp= {
 };
 var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
+</script>
+<script>
 $(document).ready(function () {
   $("#search").on("keyup", function () {
     /* 
     $("#result").html(search) ; 
     */
+    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
    var search = $("#search").val(); 
     if(search != ''){
       $.ajax({
         type: "GET",
-        url: "/search",
-        data: {search:search},
+        url: "{{route('search')}}",
+        data: {'search':search},
         dataType: "JSON",
         success: function (response) {
           var movies = response.title;
           var moviesList = $("#movieList");
           moviesList.empty();
   
-         /*  movies.forEach(title => {
-            moviesList.append('<p>' + movies.title + '</p>');
-          }); */
-          console.log(movies.title);
+         response.forEach(title => {
+            moviesList.append(`<p> ${title.title} </p>`);
+            console.log(${title.title});
+            
+          }); 
         }
       });
 
