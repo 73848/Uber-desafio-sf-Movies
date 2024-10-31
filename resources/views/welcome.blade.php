@@ -32,30 +32,32 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
 </script>
 <script>
+  $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+
+</script>
+<script>
 $(document).ready(function () {
   $("#search").on("keyup", function () {
     /* 
     $("#result").html(search) ; 
     */
-    $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
    var search = $("#search").val(); 
+   console.log(search);
     if(search != ''){
       $.ajax({
         type: "GET",
-        url: "{{route('search')}}",
+        url: '/search',
         data: {'search':search},
-        dataType: "JSON",
-        success: function (response) {
-          var movies = response.title;
+        success: function (data) {
+          var movies = data.title;
           var moviesList = $("#movieList");
           moviesList.empty();
   
-         response.forEach(title => {
-            moviesList.append(`<p> ${title.title} </p>`);
-            console.log(${title.title});
-            
-          }); 
-        }
+         console.log(data)
+        },
+    error: function(data){
+        console.log(data);
+    }
       });
 
 
