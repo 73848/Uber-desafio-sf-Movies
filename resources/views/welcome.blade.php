@@ -17,10 +17,10 @@ width:75%;margin: 0 auto;
     <input type="text" id="search" name="search">
   
     <button type="submit">Submit</button>
+    <div >
+      <p id="result"></p>
+    </div>
   </form>
-  <div id="moviesList">
-
-  </div>
 </div>
 <script>
 function myMap() {
@@ -36,6 +36,7 @@ var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
 </script>
 <script>
+  /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
 $(document).ready(function () {
   $("#search").on("keyup", function () {
     /* 
@@ -50,24 +51,31 @@ $(document).ready(function () {
         dataType: "json",
         data: {'search':search},
         success: function (data) {
-          var movies = data.title;
           var moviesList = $("#movieList");
           moviesList.empty();
           var movies = JSON.parse(data.movies);
-          console.log(movies[0].title);
-
+          
+          movies.forEach(title => {
+            $('#result').html(title.title); 
+            console.log(title.title);
+            
+          });
         },
     error: function(data){
         console.log(data);
+    }});
+    }else{
+      $("#result").html(" ")
     }
-      });
-
-
-    }
-  
     });
-  
 });
+
+$("#result").on('click', function (title) { 
+    var value = $(this).text();
+    $("#search").val(value);
+    $("#search").submit();
+
+})
 
 
 </script>
