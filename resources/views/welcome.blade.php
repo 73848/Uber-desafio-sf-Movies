@@ -17,6 +17,7 @@ padding: 20px;">
         <form action="/geolocation">
             <label for="">Search</label>
             <input type="text" id="search" name="search">
+            <input type="hidden" id="search-location" name="search-location">
 
             <button type="submit">Submit</button>
             <div>
@@ -24,35 +25,17 @@ padding: 20px;">
             </div>
         </form>
     </div>
-    <script>
-        function myMap() {
-            var mapProp = {
-                center: new google.maps.LatLng(37.7749, -122.4194),
-                zoom: 5,
-            };
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        }
 
-
-        $("#result").on('click', function(title) {
-            var value = $(this).text();
-            $("#search").val(value);
-            $("#search").submit();
-
-        })
-    </script>
-    <script>
+<script>
         $.ajaxSetup({
             headers: {
                 'csrftoken': '{{ csrf_token() }}'
             }
         });
-    </script>
-    <script>
+</script>
+<script>
         /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
         $(document).ready(function() {
-
-
             function getMovies(search) {
                 if (search != '') {
                     return $.ajax({
@@ -63,7 +46,6 @@ padding: 20px;">
                             'search': search
                         },
                     });
-
                 }
             };
 
@@ -73,20 +55,36 @@ padding: 20px;">
                     var moviesList = $("#movieList");
                     moviesList.empty();
                     var movies = JSON.parse(data.movies);
-                    responseAjax = movies;
                     movies.forEach(title => {
                         $('#result').html(title.title);
+                        $('#result').on('click', function () { 
+                            $('#search-location').val(title.locations)
+                            console.log($('#search-location').val())
+                         });
                     });
                 }).catch((err) => {
                     $('#result').html("Refresh a página ou contate o administrador");
                 });
-
-
-
-
             });
         });
-    </script>
+</script>
+
+<script>
+            function myMap() {
+                var mapProp = {
+                    center: new google.maps.LatLng(37.7749, -122.4194),
+                    zoom: 5,
+                };
+                var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            }
+    
+            $("#result").on('click', function(title) {
+                var value = $(this).text();
+                $("#search").val(value);
+                $("#search").submit();
+    
+            })
+</script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=myMap"></script>
 
