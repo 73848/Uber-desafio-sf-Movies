@@ -21,11 +21,11 @@ class SFFilmesControllerTest extends TestCase
         $this->assertJson($response);
     }
     public function test_json_format_are_returned_on_geolocation_data(){
-        $request = FacadesRequest::create('/geolocation', 'GET', ['search-location' => '100 St. Germain Avenue']);
+        $request = FacadesRequest::create('/geolocation', 'GET', ['search-location'=> 'Taylor and Jefferson Streets (Fishermans Wharf)']);
         $SfController = new SFFilmesController();
         $response = $SfController->getingGeoLocationFromAdress($request);
-        dump($response);
-        $this->assertJson($response);
+        var_dump($response->getData());
+        $this->assertJson($response->getData()->location);
 
     }
 

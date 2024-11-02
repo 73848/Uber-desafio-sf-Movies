@@ -8,42 +8,42 @@ use Illuminate\Support\Facades\Http;
 
 class SFFilmesController extends Controller
 {
-  
-    public function getDataFromApiWithLocalName(){
+
+    public function getDataFromApiWithLocalName()
+    {
         try {
             // lembre-se que a busca usando json usara o nome dos filmes como referencia e so daí que a localiz
-        //zacao é enviada para a api de localizacoes para so assimser mostrada no mapa junto com a geolocalizacao
-            $response = Http::timeout(5)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
-                '$$app_token'=>env("SODA_API_KEY"),
-                'title'=> 'Chan is Missing'
-            ]);     
+            //zacao é enviada para a api de localizacoes para so assimser mostrada no mapa junto com a geolocalizacao
+            $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
+                '$$app_token' => env("SODA_API_KEY"),
+                //'title'=> 'Chan is Missing'
+            ]);
             $response = json_encode($response->json());
-            return $response; 
+            return $response;
         } catch (\Throwable $th) {
             throw $th;
         }
     }
-    public function getingGeoLocationFromAdress(Request $request){
+    public function getingGeoLocationFromAdress(Request $request)
+    {
         try {
-            $input = $request->validate(['search-location'=>'required']);
+            $input = $request->validate(['search-location' => 'required']);
             $adress = strip_tags($input['search-location']);
-            $url = "https://nominatim.openstreetmap.org/search?";
-            $response = Http::timeout(5)->withHeaders([
-                'User-Agent' => 'uber-desafio/1.0 (clemesonsilva736@gmail.com)'
-            ])->get($url, 
-            [
-                'format'=> 'json',
-                'city'=> 'San Francisco',
-                'country'=> 'United States of America',
-                'state'=>'California',
-                'street'=> $adress
-            ]
-        );
-        $response = json_encode($response->collect()->first());
-        return $response;
+            $url = "https://maps.googleapis.com/maps/api/geocode/json?&key=";
+            $response = Http::timeout(5)->get(
+                $url,
+                [
+                    'key' => env('GOOGLE_MAPS_API_KEY'),
+                    'city' => 'San Francisco',
+                    'country' => 'United States of America',
+                    'state' => 'California',
+                    'address' => $adress
+                ]
+            );
+            $location = json_encode($response->collect()->first());
+            return response()->json(['location'=>$location]);
         } catch (\Throwable $th) {
             throw $th;
         }
     }
-    
 }
