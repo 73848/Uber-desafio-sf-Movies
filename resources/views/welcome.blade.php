@@ -60,7 +60,6 @@ padding: 20px;">
              }
 
             $("#geolocation-form").on('submit', function (e) {
-                e.preventDefault();
                 var address = $('#search-location').val();
                 if(address != " "){
                     getGeolocations(address).then((data)=>{
@@ -78,11 +77,11 @@ padding: 20px;">
                         var moviesList = $("#movieList");
                         moviesList.empty();
                         var movies = JSON.parse(data.movies);
-                        console.log(data);
                         movies.forEach(title => {
                             $('#result').html(title.title);
                             $('#result').on('click', function () { 
                                 $('#search-location').val(title.locations);
+                               /*  console.log($('#search-location').val()) */
                             });
                         });
                     }).catch((err) => {

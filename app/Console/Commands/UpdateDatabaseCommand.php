@@ -35,6 +35,7 @@ class UpdateDatabaseCommand extends Command
       for( $i=0; $i< $limit; $i++){
           $title = $response->json()[$i]['title'];
           $location = $response->json()[$i]['locations'];
+          
           $data = [
               'title' => $title,
               'locations' => $location

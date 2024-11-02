@@ -40,8 +40,12 @@ class SFFilmesController extends Controller
                     'address' => $adress
                 ]
             );
-            $location = json_encode($response->collect()->first());
-            return response()->json(['location'=>$location]);
+            $location = ($response->collect()->first());
+            // ENVIANDO LONG E LAT FORMATO JSON
+            $location =  json_encode($location[0]['geometry']['location']);
+            $location_json =  response()->json(['location'=>$location]);
+            return $location_json->getData()->location;
+
         } catch (\Throwable $th) {
             throw $th;
         }
