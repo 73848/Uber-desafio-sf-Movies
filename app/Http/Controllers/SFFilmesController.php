@@ -25,9 +25,9 @@ class SFFilmesController extends Controller
     }
     public function getingGeoLocationFromAdress(Request $request){
         try {
-            $adress = $request->validate(['adress'=>'required']);
+            $input = $request->validate(['search-location'=>'required']);
+            $adress = strip_tags($input['search-location']);
             $url = "https://nominatim.openstreetmap.org/search?";
-            $street = 'Union St';
             $response = Http::timeout(5)->withHeaders([
                 'User-Agent' => 'uber-desafio/1.0 (clemesonsilva736@gmail.com)'
             ])->get($url, 
@@ -39,7 +39,7 @@ class SFFilmesController extends Controller
                 'street'=> $adress
             ]
         );
-        $response = $response->collect()->first();
+        $response = json_encode($response->collect()->first());
         return $response;
         } catch (\Throwable $th) {
             throw $th;

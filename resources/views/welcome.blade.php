@@ -17,12 +17,14 @@ padding: 20px;">
         <form action="/geolocation">
             <label for="">Search</label>
             <input type="text" id="search" name="search">
-            <input type="hidden" id="search-location" name="search-location">
 
             <button type="submit">Submit</button>
             <div>
                 <p id="result"></p>
             </div>
+        </form>
+        <form action="/geolocation" method="get"> 
+            <input type="hidden" id="search-location" name="search-location">
         </form>
     </div>
 

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Controllers\SFFilmesController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Tests\TestCase;
 
 class SFFilmesControllerTest extends TestCase
@@ -18,6 +19,14 @@ class SFFilmesControllerTest extends TestCase
         $response = $SfController->getDataFromApiWithLocalName();
 
         $this->assertJson($response);
+    }
+    public function test_json_format_are_returned_on_geolocation_data(){
+        $request = FacadesRequest::create('/geolocation', 'GET', ['search-location' => '100 St. Germain Avenue']);
+        $SfController = new SFFilmesController();
+        $response = $SfController->getingGeoLocationFromAdress($request);
+        dump($response);
+        $this->assertJson($response);
+
     }
 
    /*  public function test_structure_of_are_geted_corretly_response(){
