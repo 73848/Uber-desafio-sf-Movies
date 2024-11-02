@@ -39,7 +39,6 @@ padding: 20px;">
         /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
         $(document).ready(function() {
             function getMovies(search) {
-                if (search != '') {
                     return $.ajax({
                         type: "GET",
                         url: '/search',
@@ -48,25 +47,26 @@ padding: 20px;">
                             'search': search
                         },
                     });
-                }
             };
-
+            /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
             $("#search").on("keyup", function() {
                 var search = $("#search").val();
-                getMovies(search).then((data) => {
-                    var moviesList = $("#movieList");
-                    moviesList.empty();
-                    var movies = JSON.parse(data.movies);
-                    movies.forEach(title => {
-                        $('#result').html(title.title);
-                        $('#result').on('click', function () { 
-                            $('#search-location').val(title.locations)
-                            console.log($('#search-location').val())
-                         });
+                if(search != ''){
+                    getMovies(search).then((data) => {
+                        var moviesList = $("#movieList");
+                        moviesList.empty();
+                        var movies = JSON.parse(data.movies);
+                        movies.forEach(title => {
+                            $('#result').html(title.title);
+                            $('#result').on('click', function () { 
+                                $('#search-location').val(title.locations)
+                                console.log($('#search-location').val())
+                            });
+                        });
+                    }).catch((err) => {
+                        $('#result').html("Refresh a página ou contate o administrador");
                     });
-                }).catch((err) => {
-                    $('#result').html("Refresh a página ou contate o administrador");
-                });
+                }
             });
         });
 </script>
