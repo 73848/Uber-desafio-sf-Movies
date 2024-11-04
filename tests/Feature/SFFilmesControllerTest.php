@@ -24,7 +24,7 @@ class SFFilmesControllerTest extends TestCase
         $request = FacadesRequest::create('/geolocation', 'GET', ['search-location'=> 'Taylor and Jefferson Streets (Fishermans Wharf)']);
         $SfController = new SFFilmesController();
         $response = $SfController->getingGeoLocationFromAdress($request);
-        var_dump($response);
+        var_dump(json_decode($response)->lat);
         $this->assertJson($response);
 
     }

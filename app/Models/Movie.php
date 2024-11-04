@@ -14,6 +14,8 @@ class Movie extends Model
         'id',
         'title',
         'locations',
+        'lat',
+        'long',
         'updated_at',
         'created_at'
     ];

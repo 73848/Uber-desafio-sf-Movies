@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\SFFilmesController;
 use App\Models\Movie;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -27,6 +28,8 @@ class UpdateDatabaseCommand extends Command
      */
     public function handle()
     {
+        $controllerMovie = new SFFilmesController();
+
         $limit = 5;
         $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
             '$limit'=>$limit ,
@@ -35,10 +38,12 @@ class UpdateDatabaseCommand extends Command
       for( $i=0; $i< $limit; $i++){
           $title = $response->json()[$i]['title'];
           $location = $response->json()[$i]['locations'];
-          
+          $geolocation = json_decode($controllerMovie->getingGeoLocationFromAdress($location));
           $data = [
               'title' => $title,
-              'locations' => $location
+              'locations' => $location,
+              'lat' => $geolocation->lat,
+              'long' => $geolocation->lng
           ];
           Movie::create($data);
 
