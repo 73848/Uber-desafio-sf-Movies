@@ -17,4 +17,5 @@ class SearchController extends Controller
             return response()->json(['movies'=>$movies]);
     }
     
+    
 }

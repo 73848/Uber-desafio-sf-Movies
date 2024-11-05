@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -49,5 +50,10 @@ class SFFilmesController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+    public function getAllMovies(){
+        $result = Movie::all();
+        $movies = json_encode($result);
+        return response()->json(['movies'=>$movies]); 
     }
 }
