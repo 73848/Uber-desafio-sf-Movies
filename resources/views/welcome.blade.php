@@ -30,7 +30,6 @@ padding: 20px;">
 
 
     <script>
-       
         $("#result").on('click', function(title) {
             var value = $(this).text();
             $("#search").val(value);
@@ -45,7 +44,7 @@ padding: 20px;">
         });
         /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
         $(document).ready(function() {
-            function getMovies(search) {
+            function searcMovies(search) {
                 return $.ajax({
                     type: "GET",
                     url: '/search',
@@ -56,23 +55,23 @@ padding: 20px;">
                 });
             };
 
-        $("#geolocation-form").on('submit', function(e) {
-            e.preventDefault(e)
-            // PRECISO DE OUTRA FUNCAO PARA REQ AJAX NO DB E RETORNO DE LAT E LONG
-            var address = $('#search-location').val();
-            if (address != " ") {
-                getGeolocations(address).then((data) => {
-                    console.log(data);
-                });
-            }
-        });
+            $("#geolocation-form").on('submit', function(e) {
+                e.preventDefault(e)
+                // PRECISO DE OUTRA FUNCAO PARA REQ AJAX NO DB E RETORNO DE LAT E LONG
+                var address = $('#search-location').val();
+                if (address != " ") {
+                    getGeolocations(address).then((data) => {
+                        console.log(data);
+                    });
+                }
+            });
 
 
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
             $("#search").on("keyup", function() {
                 var search = $("#search").val();
                 if (search != '') {
-                    getMovies(search).then((data) => {
+                    searcMovies(search).then((data) => {
                         var moviesList = $("#movieList");
                         moviesList.empty();
                         var movies = JSON.parse(data.movies);
@@ -92,26 +91,34 @@ padding: 20px;">
             });
         });
 
-             function myMap() {
+        function myMap() {
+            function getAllMovies() {
+                return $.ajax({
+                    type: "GET",
+                    url: '/movies',
+                    dataType: "json",
+
+                });
+            };
             var mapProp = {
                 center: new google.maps.LatLng(37.7749, -122.4194),
                 zoom: 15,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            getAllMovies(' ').then((data)=>{
+            getAllMovies(' ').then((data) => {
                 var movies = JSON.parse(data.movies);
-                movies.forEach((movie)=>{
-                    console.log(movie);
+                movies.forEach((movie) => {
+                    var marker = new google.maps.Marker({
+                        position: {
+                            lat: movie.lat,
+                            lng: movie.long
+                        }
+                    });
+                    marker.setMap(map);
                 })
             })
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: 37.8081009,
-                    lng: -122.4159393
-                }
-            });
-            
-            marker.setMap(map);
+
+
         };
     </script>
 
