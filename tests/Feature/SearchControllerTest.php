@@ -36,17 +36,17 @@ class SearchControllerTest extends TestCase
         ->getJson(route('search',['search'=>'Chan Is']))
         ->assertOk()
         ->assertJsonStructure([
-                    'movies'=>[
-                        [
-                            'id',
-                            'title',
-                            'locations',
-                            'lat',
-                            'long',
-                            'updated_at',
-                            'created_at'
-                        ]
-                    ]
+            'movies'=>[
+                [
+                    'id',
+                    'title',
+                    'locations',
+                    'lat',
+                    'long',
+                    'updated_at',
+                    'created_at'
+                ]
+            ]
         ]);
     }
 }
