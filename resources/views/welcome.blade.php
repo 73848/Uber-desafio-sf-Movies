@@ -113,7 +113,14 @@
                 if (address != " ") {
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
-                        console.log(data);
+                        console.log(movies);
+                        movies.forEach(movie => {
+                            const  position =  {
+                            lat: movie.lat,
+                            lng: movie.long
+                        }
+                            map.setCenter( position);
+                        });
                     });
                 }
             });
