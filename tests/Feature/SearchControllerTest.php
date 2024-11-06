@@ -18,10 +18,9 @@ class SearchControllerTest extends TestCase
 
     public function test_url_response_a_json(): void
     {
-        $request = FacadesRequest::create('/search', 'GET', ['search'=>'Experi']);
+        $request = FacadesRequest::create('/search', 'GET', ['search'=>'Chan Is']);
         $movieController = new SearchController();
         $response = $movieController->search($request);
-        var_dump($response->getData());
         $this->assertJson($response->getData()->movies);
     }
     public function test_json_data_is_returned_corretly(){
@@ -30,5 +29,24 @@ class SearchControllerTest extends TestCase
         ->getJson(route('search',['search'=>'Experi']))
         ->assertOk()
         ->assertJsonCount(1);
+    }
+    public function test_struture_of_json_response_is_correct(){
+       
+        $this
+        ->getJson(route('search',['search'=>'Chan Is']))
+        ->assertOk()
+        ->assertJsonStructure([
+                    'movies'=>[
+                        [
+                            'id',
+                            'title',
+                            'locations',
+                            'lat',
+                            'long',
+                            'updated_at',
+                            'created_at'
+                        ]
+                    ]
+        ]);
     }
 }
