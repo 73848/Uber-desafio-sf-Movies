@@ -21,7 +21,14 @@ class SearchControllerTest extends TestCase
         $request = FacadesRequest::create('/search', 'GET', ['search'=>'Experi']);
         $movieController = new SearchController();
         $response = $movieController->search($request);
-        var_dump($response->getData()->movies);
+        var_dump($response->getData());
         $this->assertJson($response->getData()->movies);
+    }
+    public function test_json_data_is_returned_corretly(){
+        
+        $this
+        ->getJson(route('search',['search'=>'Experi']))
+        ->assertOk()
+        ->assertJsonCount(1);
     }
 }

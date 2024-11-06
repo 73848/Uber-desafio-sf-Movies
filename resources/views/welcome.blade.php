@@ -5,28 +5,22 @@
 
 <body>
 
-    <br>
-    <div id="googleMap" style="width:75%;height:400px;
-  margin: 0 auto; 
-  padding: 20px;
-  background-color: #f0f0f0;">
-    </div>
-    <div style=" 
-width:75%;margin: 0 auto; 
-padding: 20px;">
-        <form action="/geolocation">
-            <label for="">Search</label>
-            <input type="text" id="search" name="search">
-
-            <div>
-                <p id="result"></p>
-            </div>
-        </form>
-        <form action="/geolocation" id="geolocation-form" method="get">
-            <input type="hidden" id="search-location" name="search-location">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+<br>
+<div id="googleMap" style="width:75%;height:400px;margin: 0 auto; padding: 20px;background-color: #f0f0f0;">
+</div>
+<div style="width:75%;margin: 0 auto; padding: 20px;">
+    <form action="/geolocation">
+        <label for="">Search</label>
+        <input type="text" id="search" name="search">
+        <div>
+            <p id="result"></p>
+        </div>
+    </form>
+    <form action="/geolocation" id="geolocation-form" method="get">
+        <input type="hidden" id="search-location" name="search-location">
+        <button type="submit">Submit</button>
+    </form>
+</div>
 
 
     <script>
@@ -34,7 +28,6 @@ padding: 20px;">
             var value = $(this).text();
             $("#search").val(value);
             $("#search").submit();
-
         });
 
         $.ajaxSetup({
@@ -97,12 +90,11 @@ padding: 20px;">
                     type: "GET",
                     url: '/movies',
                     dataType: "json",
-
                 });
             };
             var mapProp = {
                 center: new google.maps.LatLng(37.7749, -122.4194),
-                zoom: 15,
+                zoom: 12,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
             getAllMovies(' ').then((data) => {
