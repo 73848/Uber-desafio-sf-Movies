@@ -25,8 +25,6 @@ class SFFilmesController extends Controller
     public function getingGeoLocationFromAdress(String $adress)
     {
         try {
-          /*   $input = $request->validate(['search-location' => 'required']);
-            $adress = strip_tags($input['search-location']); */
             $url = "https://maps.googleapis.com/maps/api/geocode/json?&key=";
             $response = Http::timeout(5)->get(
                 $url,

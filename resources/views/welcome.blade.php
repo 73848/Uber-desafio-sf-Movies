@@ -5,59 +5,61 @@
 
 <body>
 
-<br>
-<div id="googleMap" style="width:75%;height:400px;margin: 0 auto; padding: 20px;background-color: #f0f0f0;">
-</div>
-<div style="width:75%;margin: 0 auto; padding: 20px;">
-    <form action="/geolocation">
-        <label for="">Search</label>
-        <input type="text" id="search" name="search">
-        <div>
-            <p id="result"></p>
-        </div>
-    </form>
-    <form action="/geolocation" id="geolocation-form" method="get">
-        <input type="hidden" id="search-location" name="search-location">
-        <button type="submit">Submit</button>
-    </form>
-</div>
+    <br>
+    <div id="googleMap" style="width:75%;height:400px;margin: 0 auto; padding: 20px;background-color: #f0f0f0;">
+    </div>
+    <div style="width:75%;margin: 0 auto; padding: 20px;">
+        <form action="/geolocation">
+            <label for="">Search</label>
+            <input type="text" id="search" name="search">
+            <div>
+                <p id="result"></p>
+            </div>
+        </form>
+        <form action="/geolocation" id="geolocation-form" method="get">
+            <input type="hidden" id="search-location" name="search-location">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
 
     <script>
+        
+        $.ajaxSetup({
+            headers: {
+                'csrftoken': '{{ csrf_token() }}'
+            }
+        });
+        
         $("#result").on('click', function(title) {
             var value = $(this).text();
             $("#search").val(value);
             $("#search").submit();
         });
 
-        $.ajaxSetup({
-            headers: {
-                'csrftoken': '{{ csrf_token() }}'
-            }
-        });
+        function searcMovies(search) {
+            return $.ajax({
+                type: "GET",
+                url: '/search',
+                dataType: "json",
+                data: {
+                    'search': search
+                },
+            });
+        };
+
+        function getAllMovies() {
+            return $.ajax({
+                type: "GET",
+                url: '/movies',
+                dataType: "json",
+            });
+        };
         /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
         $(document).ready(function() {
-            function searcMovies(search) {
-                return $.ajax({
-                    type: "GET",
-                    url: '/search',
-                    dataType: "json",
-                    data: {
-                        'search': search
-                    },
-                });
-            };
 
-            $("#geolocation-form").on('submit', function(e) {
-                e.preventDefault(e)
-                // PRECISO DE OUTRA FUNCAO PARA REQ AJAX NO DB E RETORNO DE LAT E LONG
-                var address = $('#search-location').val();
-                if (address != " ") {
-                    getGeolocations(address).then((data) => {
-                        console.log(data);
-                    });
-                }
-            });
+
+
 
 
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
@@ -85,18 +87,13 @@
         });
 
         function myMap() {
-            function getAllMovies() {
-                return $.ajax({
-                    type: "GET",
-                    url: '/movies',
-                    dataType: "json",
-                });
-            };
+
             var mapProp = {
                 center: new google.maps.LatLng(37.7749, -122.4194),
                 zoom: 12,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
             getAllMovies(' ').then((data) => {
                 var movies = JSON.parse(data.movies);
                 movies.forEach((movie) => {
@@ -109,6 +106,17 @@
                     marker.setMap(map);
                 })
             })
+
+            $("#geolocation-form").on('submit', function(e) {
+                e.preventDefault(e)
+                var address = $('#search-location').val();
+                if (address != " ") {
+                    searcMovies(address).then((data) => {
+                        var movies = JSON.parse(data.movies);
+                        console.log(data);
+                    });
+                }
+            });
 
 
         };

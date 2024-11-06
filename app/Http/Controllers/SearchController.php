@@ -12,7 +12,7 @@ class SearchController extends Controller
 
             $input = $request->validate(['search'=>'required|string']);
             $input = strip_tags($input['search']);
-            $result = Movie::query()->where('title','LIKE',  "%{$input}%")->get();
+            $result = Movie::query()->where('title','LIKE',  "%{$input}%")->orWhere('locations', 'LIKE', "%{$input}%")->get();
             $movies = json_encode($result);
             return response()->json(['movies'=>$movies]);
     }

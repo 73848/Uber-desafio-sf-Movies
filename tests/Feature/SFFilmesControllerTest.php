@@ -13,7 +13,6 @@ class SFFilmesControllerTest extends TestCase
         $response = $SfController->getingGeoLocationFromAdress('Taylor and Jefferson Streets (Fishermans Wharf)');
         var_dump(json_decode($response));
         $this->assertJson($response);
-
     }
 
    /*  public function test_structure_of_are_geted_corretly_response(){

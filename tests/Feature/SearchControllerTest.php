@@ -21,6 +21,7 @@ class SearchControllerTest extends TestCase
         $request = FacadesRequest::create('/search', 'GET', ['search'=>'Chan Is']);
         $movieController = new SearchController();
         $response = $movieController->search($request);
+        dump($response);
         $this->assertJson($response->getData()->movies);
     }
     public function test_json_data_is_returned_corretly(){
