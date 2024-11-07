@@ -2,6 +2,28 @@
 <html>
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
+    <style>
+        .info-box {
+            max-width: 300px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .info-box h2 {
+            font-size: 20px;
+            margin-top: 0;
+            color: #007bff;
+        }
+        .info-box p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
 
 <body>
 
@@ -20,7 +42,13 @@
             <input type="hidden" id="search-location" name="search-location">
             <button type="submit">Submit</button>
         </form>
+        <div class="info-box">
+            <h2 id="informations-title">Informações Importantes</h2>
+            <p id="informations-paragaph"></p>
+        </div>
+        
     </div>
+    
 
 
     <script>
@@ -54,6 +82,11 @@
                 dataType: "json",
             });
         };
+
+        function showingInformation (movie, title, paragph) { 
+            title.html(movie.title)
+            paragph.html(movie.locations)
+         }
 
         $(document).ready(function() {
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
@@ -112,10 +145,10 @@
                                 lat: movie.lat,
                                 lng: movie.long
                             }
-                            var infowindow = new google.maps.InfoWindow({
-                                content:"Hello World!"
-                             });
-                            infowindow.open(map,marker);
+                            
+                            var title = $('#informations-title')
+                            var paragph = $('#informations-paragaph')
+                            showingInformation(movie, title, paragph)
                             map.setCenter(position);
                         });
                     });
