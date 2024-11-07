@@ -24,13 +24,12 @@
 
 
     <script>
-        
         $.ajaxSetup({
             headers: {
                 'csrftoken': '{{ csrf_token() }}'
             }
         });
-        
+
         $("#result").on('click', function(title) {
             var value = $(this).text();
             $("#search").val(value);
@@ -55,13 +54,8 @@
                 dataType: "json",
             });
         };
-        /* AJAX PARA REQUISICOES DA FUNCAO SEARCH */
+
         $(document).ready(function() {
-
-
-
-
-
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
             $("#search").on("keyup", function() {
                 var search = $("#search").val();
@@ -70,13 +64,10 @@
                         var moviesList = $("#movieList");
                         moviesList.empty();
                         var movies = JSON.parse(data.movies);
-                        console.log(movies);
                         movies.forEach(title => {
                             $('#result').html(title.title);
                             $('#result').on('click', function() {
                                 $('#search-location').val(title.locations);
-                                /*  console.log($('#search-location').val()) */
-
                             });
                         });
                     }).catch((err) => {
@@ -87,13 +78,11 @@
         });
 
         function myMap() {
-
             var mapProp = {
                 center: new google.maps.LatLng(37.7749, -122.4194),
                 zoom: 12,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
             getAllMovies(' ').then((data) => {
                 var movies = JSON.parse(data.movies);
                 movies.forEach((movie) => {
@@ -101,37 +90,39 @@
                         position: {
                             lat: movie.lat,
                             lng: movie.long
-                        }
-                    });
+                        },
+                        label: {
+                                text: movie.title,
+                                color: "#191970",
+                                fontWeight: "bold",
+                                fontSize: "10px"
+                        }                
+    });
                     marker.setMap(map);
                 })
             })
-
             $("#geolocation-form").on('submit', function(e) {
                 e.preventDefault(e)
                 var address = $('#search-location').val();
                 if (address != " ") {
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
-                        console.log(movies);
                         movies.forEach(movie => {
-                            const  position =  {
-                            lat: movie.lat,
-                            lng: movie.long
-                        }
-                            map.setCenter( position);
+                            const position = {
+                                lat: movie.lat,
+                                lng: movie.long
+                            }
+                            var infowindow = new google.maps.InfoWindow({
+                                content:"Hello World!"
+                             });
+                            infowindow.open(map,marker);
+                            map.setCenter(position);
                         });
                     });
                 }
             });
-
-
         };
     </script>
-
-
     <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&callback=myMap"></script>
-
 </body>
-
 </html>
