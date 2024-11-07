@@ -35,22 +35,19 @@
             <label for="">Search</label>
             <input type="text" id="search" name="search">
             <div>
-                <p id="result"></p>
+                <p id="result" ></p>
             </div>
         </form>
         <form action="/geolocation" id="geolocation-form" method="get">
             <input type="hidden" id="search-location" name="search-location">
             <button type="submit">Submit</button>
         </form>
-        <div class="info-box">
-            <h2 id="informations-title">Informações Importantes</h2>
+        <div class="" id="info-box">
+            <h2 id="informations-title"></h2>
             <p id="informations-paragaph"></p>
         </div>
         
     </div>
-    
-
-
     <script>
         $.ajaxSetup({
             headers: {
@@ -137,6 +134,7 @@
             $("#geolocation-form").on('submit', function(e) {
                 e.preventDefault(e)
                 var address = $('#search-location').val();
+                $("#info-box").addClass("info-box")
                 if (address != " ") {
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
