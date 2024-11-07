@@ -134,8 +134,8 @@
             $("#geolocation-form").on('submit', function(e) {
                 e.preventDefault(e)
                 var address = $('#search-location').val();
-                $("#info-box").addClass("info-box")
                 if (address != " ") {
+                    $("#info-box").addClass("info-box")
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
                         movies.forEach(movie => {
