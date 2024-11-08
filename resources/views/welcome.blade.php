@@ -93,7 +93,9 @@
 
         function showingInformation (movie, title, paragph) { 
             title.html(movie.title)
-            paragph.html(movie.locations)
+            paragph.html("Localização: " + movie.locations + "<br>Ano de Gravação: " + movie.release_year +
+             "<br>Produtor: " + movie.production_company + "<br>Distribuição: "+ movie.distributor + "<br>Direção: " + movie.director+
+              "<br>Escrito por: " +movie.writer + "<br>Atores: " +movie.actor_1+ ", "+movie.actor_2+", " + movie.actor_3)
          }
 
         $(document).ready(function() {
@@ -146,7 +148,6 @@
                 e.preventDefault(e)
                 var address = $('#search-location').val();
                 if (address != " ") {
-                    $("#info-box").addClass("info-box")
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
                         movies.forEach(movie => {
@@ -154,12 +155,20 @@
                                 lat: movie.lat,
                                 lng: movie.long
                             }
-                            getInfoMovies(movie.title)
-                            /* 
-                            var title = $('#informations-title')
-                            var paragph = $('#informations-paragaph')
-                            showingInformation(movie, title, paragph) */
-                            map.setCenter(position);
+                           getInfoMovies(movie.title).then((data)=>{
+                                var infoMovie = JSON.parse(data.movies);
+                                infoMovie.forEach(element => {
+                                    var title = $('#informations-title');
+                                    var paragph = $('#informations-paragaph');
+                                    showingInformation(element, title, paragph);
+                                    
+                                });
+                            });
+                            setTimeout(() => {
+                                $("#info-box").addClass("info-box")
+                                map.setCenter(position);
+                                
+                            }, 2000);
                         });
                     });
                 }
