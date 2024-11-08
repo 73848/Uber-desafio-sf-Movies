@@ -80,6 +80,17 @@
             });
         };
 
+        function getInfoMovies(movie) {
+            return $.ajax({
+                type: "GET",
+                url: '/movies/information',
+                dataType: "json",
+                data: {
+                    'movie': movie
+                },
+            });
+          }
+
         function showingInformation (movie, title, paragph) { 
             title.html(movie.title)
             paragph.html(movie.locations)
@@ -143,10 +154,11 @@
                                 lat: movie.lat,
                                 lng: movie.long
                             }
-                            
+                            getInfoMovies(movie.title)
+                            /* 
                             var title = $('#informations-title')
                             var paragph = $('#informations-paragaph')
-                            showingInformation(movie, title, paragph)
+                            showingInformation(movie, title, paragph) */
                             map.setCenter(position);
                         });
                     });
