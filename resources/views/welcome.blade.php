@@ -127,7 +127,7 @@
                                 fontWeight: "bold",
                                 fontSize: "10px"
                         }                
-    });
+                    });
                     marker.setMap(map);
                 })
             })

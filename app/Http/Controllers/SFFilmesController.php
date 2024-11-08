@@ -37,7 +37,6 @@ class SFFilmesController extends Controller
                 ]
             );
             $location = ($response->collect()->first());
-            // ENVIANDO LONG E LAT FORMATO JSON
             $location =  json_encode($location[0]['geometry']['location']);
             $location_json =  response()->json(['location'=>$location]);
             return $location_json->getData()->location;
@@ -50,5 +49,16 @@ class SFFilmesController extends Controller
         $result = Movie::all();
         $movies = json_encode($result);
         return response()->json(['movies'=>$movies]); 
+    }
+    public function getMoviesInformations(Request $request){
+        try {
+            $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
+                '$$app_token' => env("SODA_API_KEY"),
+            ]);
+            $movies = json_encode($response->json());
+            return response()->json(['movies'=>$movies]); 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
