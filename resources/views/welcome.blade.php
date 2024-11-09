@@ -97,6 +97,18 @@
              "<br>Produtor: " + movie.production_company + "<br>Distribuição: "+ movie.distributor + "<br>Direção: " + movie.director+
               "<br>Escrito por: " +movie.writer + "<br>Atores: " +movie.actor_1+ ", "+movie.actor_2+", " + movie.actor_3)
          }
+        
+         function liveSearch(data){
+                var moviesList = $("#movieList");
+                moviesList.empty();
+                var movies = JSON.parse(data.movies);
+                movies.forEach(title => {
+                    $('#result').html(title.title);
+                    $('#result').on('click', function() {
+                        $('#search-location').val(title.locations);
+                    });
+                });
+        }
 
         $(document).ready(function() {
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
@@ -104,15 +116,7 @@
                 var search = $("#search").val();
                 if (search != '') {
                     searcMovies(search).then((data) => {
-                        var moviesList = $("#movieList");
-                        moviesList.empty();
-                        var movies = JSON.parse(data.movies);
-                        movies.forEach(title => {
-                            $('#result').html(title.title);
-                            $('#result').on('click', function() {
-                                $('#search-location').val(title.locations);
-                            });
-                        });
+                        liveSearch(data)
                     }).catch((err) => {
                         $('#result').html("Refresh a página ou contate o administrador");
                     });
@@ -161,7 +165,6 @@
                                     var title = $('#informations-title');
                                     var paragph = $('#informations-paragaph');
                                     showingInformation(element, title, paragph);
-                                    
                                 });
                             });
                             setTimeout(() => {
