@@ -91,7 +91,9 @@
             });
           }
 
-        function showingInformation (movie, title, paragph) { 
+        function showingInformation (movie) { 
+            var title = $('#informations-title');
+            var paragph = $('#informations-paragaph');
             title.html(movie.title)
             paragph.html("Localização: " + movie.locations + "<br>Ano de Gravação: " + movie.release_year +
              "<br>Produtor: " + movie.production_company + "<br>Distribuição: "+ movie.distributor + "<br>Direção: " + movie.director+
@@ -100,8 +102,6 @@
             }
         
          function liveSearch(data){
-                var moviesList = $("#movieList");
-                moviesList.empty();
                 var movies = JSON.parse(data.movies);
                 movies.forEach(title => {
                     $('#result').html(title.title);
@@ -111,10 +111,17 @@
                 });
         }
 
+        function getLatLng(movie){
+            return {lat: movie.lat,
+            lng: movie.long};
+        }
+
         $(document).ready(function() {
             /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
             $("#search").on("keyup", function() {
                 var search = $("#search").val();
+                var moviesList = $("#result");
+                moviesList.empty();
                 if (search != '') {
                     searcMovies(search).then((data) => {
                         liveSearch(data)
@@ -135,10 +142,7 @@
                 var movies = JSON.parse(data.movies);
                 movies.forEach((movie) => {
                     var marker = new google.maps.Marker({
-                        position: {
-                            lat: movie.lat,
-                            lng: movie.long
-                        },
+                        position: getLatLng(movie),
                         label: {
                                 text: movie.title,
                                 color: "#191970",
@@ -156,16 +160,11 @@
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
                         movies.forEach(movie => {
-                            const position = {
-                                lat: movie.lat,
-                                lng: movie.long
-                            }
+                            const position = getLatLng(movie);
                            getInfoMovies(movie.title).then((data)=>{
                                 var infoMovie = JSON.parse(data.movies);
                                 infoMovie.forEach(element => {
-                                    var title = $('#informations-title');
-                                    var paragph = $('#informations-paragaph');
-                                    showingInformation(element, title, paragph);
+                                    showingInformation(element);
                                 });
                             });
                             setTimeout(() => {
