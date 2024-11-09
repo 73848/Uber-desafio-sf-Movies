@@ -8,17 +8,23 @@ use Tests\TestCase;
 class SFFilmesControllerTest extends TestCase
 {
     
+  public function test_json_format_are_returned_on_geolocation_data_corretl(){
+    $SfController = new SFFilmesController();
+    $response = $SfController->getallDataFromApi(10);
+    var_dump($response);
+    $this->assertJson($response);
+}
+
     public function test_json_format_are_returned_on_geolocation_data_corretly(){
         $SfController = new SFFilmesController();
         $response = $SfController->getingGeoLocationFromAdress('Taylor and Jefferson Streets (Fishermans Wharf)');
         $this->assertJson($response);
     }
     public function test_json_structure_are_returned_on_movies_informations_corretly(){
-      $response =  $this->getJson(route('informations',['movie'=>'Chan is Missing']));
-      $this
-      ->getJson(route('informations',['movie'=>'Chan is Missing']))
-      ->assertOk()
-      ->assertJsonStructure([
+        $this
+        ->getJson(route('informations',['movie'=>'Chan is Missing']))
+        ->assertOk()
+        ->assertJsonStructure([
         'movies'=>[
             [
                 'title',
@@ -34,7 +40,6 @@ class SFFilmesControllerTest extends TestCase
             ]
         ]
     ]);
-      var_dump($response);
   }
 
    /*  public function test_structure_of_are_geted_corretly_response(){

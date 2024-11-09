@@ -6,18 +6,18 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-
 class SFFilmesController extends Controller
 {
 
-    public function getallDataFromApi()
+    public function getallDataFromApi($limit)
     {
         try {
             $response = Http::timeout(16)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
                 '$$app_token' => env("SODA_API_KEY"),
+                '$limit'=>$limit
             ]);
             $response = json_encode($response->json());
-            return $response;
+            return json_encode(response()->json(['movies'=>$response])->original); // retorna um json, obviamente. fiz essa gambiarra para tê-lo do outro lado de forma mais amigável (no futuro, pretendo corrigir isso)
         } catch (\Throwable $th) {
             throw $th;
         }

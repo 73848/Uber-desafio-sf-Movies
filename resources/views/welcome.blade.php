@@ -96,7 +96,8 @@
             paragph.html("Localização: " + movie.locations + "<br>Ano de Gravação: " + movie.release_year +
              "<br>Produtor: " + movie.production_company + "<br>Distribuição: "+ movie.distributor + "<br>Direção: " + movie.director+
               "<br>Escrito por: " +movie.writer + "<br>Atores: " +movie.actor_1+ ", "+movie.actor_2+", " + movie.actor_3)
-         }
+            $("#info-box").addClass("info-box");
+            }
         
          function liveSearch(data){
                 var moviesList = $("#movieList");
@@ -168,9 +169,7 @@
                                 });
                             });
                             setTimeout(() => {
-                                $("#info-box").addClass("info-box")
                                 map.setCenter(position);
-                                
                             }, 2000);
                         });
                     });
