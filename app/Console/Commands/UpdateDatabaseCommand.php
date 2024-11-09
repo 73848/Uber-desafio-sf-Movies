@@ -28,23 +28,22 @@ class UpdateDatabaseCommand extends Command
      */
     public function handle()
     {
-      $controllerMovie = new SFFilmesController();
-      $limit = 10;
-      $response = $controllerMovie->getallDataFromApi($limit);
-       
-      for( $i=0; $i< $limit; $i++){
-          $title = $response->json()[$i]['title'];
-          $location = $response->json()[$i]['locations'];
-          $geolocation = json_decode($controllerMovie->getingGeoLocationFromAdress($location));
-          $data = [
-              'title' => $title,
-              'locations' => $location,
-              
-          ];
-          Movie::create($data);
-
-      }
-      $this->info('Successfully updated database');
-
+        $controllerMovie = new SFFilmesController();
+        $limit = 10;
+        $response = json_decode($controllerMovie->getallDataFromApi($limit));
+        $response = json_decode($response->movies);
+        foreach ($response as $response) {
+            if(property_exists($response, 'locations')){
+                $geolocation = json_decode($controllerMovie->getingGeoLocationFromAdress($response->locations));
+                $data = [
+                    'title' => $response->title,
+                    'locations' => $response->locations,
+                    'lat' => $geolocation->lat,
+                    'long' => $geolocation->lng,
+                ];
+                Movie::create($data);
+            }
+        }
+        $this->info('Successfully updated database');
     }
 }
