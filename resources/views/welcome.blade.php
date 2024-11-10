@@ -34,8 +34,7 @@
         <form action="/geolocation">
             <label for="">Search</label>
             <input type="text" id="search" name="search">
-            <div>
-                <p id="result" ></p>
+            <div id="container">
             </div>
         </form>
         <form action="/geolocation" id="geolocation-form" method="get">
@@ -55,8 +54,8 @@
             }
         });
 
-        $("#result").on('click', function(title) {
-            var value = $(this).text();
+        $(document).on('click',"#result", function(title) {
+            var value = $("#result").text();
             $("#search").val(value);
             $("#search").submit();
         });
@@ -102,13 +101,17 @@
             }
         
          function liveSearch(data){
-                var movies = JSON.parse(data.movies);
-                movies.forEach(title => {
-                    $('#result').html(title.title);
-                    $('#result').on('click', function() {
-                        $('#search-location').val(title.locations);
-                    });
+            var movies = JSON.parse(data.movies);
+            movies.forEach(title => {
+                const newPara = $('<p>', {
+                    id: 'result',
+                    text: title.title
+            });
+            $('#container').append(newPara);
+                $(document).on('click','#result', function() {
+                    $('#search-location').val(title.locations);
                 });
+            });
         }
 
         function getLatLng(movie){
@@ -117,12 +120,12 @@
         }
 
         $(document).ready(function() {
-            /* MANIPULACAO DE DADOS DO DB PARA REQUISICOES À API GEOLOCALIZACAO E COLETA DE DADOS */
             $("#search").on("keyup", function() {
                 var search = $("#search").val();
-                var moviesList = $("#result");
+                var moviesList = $("#conteiner");
                 moviesList.empty();
                 if (search != '') {
+                    $("#container").empty();
                     searcMovies(search).then((data) => {
                         liveSearch(data)
                     }).catch((err) => {
@@ -161,7 +164,7 @@
                         var movies = JSON.parse(data.movies);
                         movies.forEach(movie => {
                             const position = getLatLng(movie);
-                           getInfoMovies(movie.title).then((data)=>{
+                            getInfoMovies(movie.title).then((data)=>{
                                 var infoMovie = JSON.parse(data.movies);
                                 infoMovie.forEach(element => {
                                     showingInformation(element);
