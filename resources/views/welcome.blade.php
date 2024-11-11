@@ -31,12 +31,12 @@
     <div id="googleMap" style="width:75%;height:400px;margin: 0 auto; padding: 20px;background-color: #f0f0f0;">
     </div>
     <div style="width:75%;margin: 0 auto; padding: 20px;">
-        <form action="/geolocation">
+        <div>
             <label for="">Search</label>
             <input type="text" id="search" name="search">
             <div id="container">
             </div>
-        </form>
+        </div>
         <form action="/geolocation" id="geolocation-form" method="get">
             <input type="hidden" id="search-location" name="search-location">
             <button type="submit">Submit</button>
@@ -118,27 +118,27 @@
             return {lat: movie.lat,
             lng: movie.long};
         }
+        function ajaxSearchResult(){ 
+            var search = $("#search").val();// valor do label
+            if (search != '') {
+                $("#container").empty();
+                searcMovies(search).then((data) => {
+                    liveSearch(data)
+                }).catch((err) => {
+                    $('#result').html("Refresh a página ou contate o administrador");
+                });
+        }}
 
         $(document).ready(function() {
             $("#search").on("keyup", function() {
-                var search = $("#search").val();
-                var moviesList = $("#conteiner");
-                moviesList.empty();
-                if (search != '') {
-                    $("#container").empty();
-                    searcMovies(search).then((data) => {
-                        liveSearch(data)
-                    }).catch((err) => {
-                        $('#result').html("Refresh a página ou contate o administrador");
-                    });
-                }
+                ajaxSearchResult()
             });
         });
 
         function myMap() {
             var mapProp = {
                 center: new google.maps.LatLng(37.7749, -122.4194),
-                zoom: 12,
+                zoom: 15,
             };
             var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
             getAllMovies(' ').then((data) => {
@@ -162,6 +162,7 @@
             $("#geolocation-form").on('submit', function(e) {
                 e.preventDefault(e)
                 var address = $('#search-location').val();
+                console.log(address)
                 if (address != " ") {
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
