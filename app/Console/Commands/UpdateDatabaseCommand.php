@@ -29,7 +29,7 @@ class UpdateDatabaseCommand extends Command
     public function handle()
     {
         $controllerMovie = new SFFilmesController();
-        $limit = 10;
+        $limit = 500;
         $response = json_decode($controllerMovie->getallDataFromApi($limit));
         $response = json_decode($response->movies);
         foreach ($response as $response) {

@@ -30,16 +30,22 @@ class SFFilmesController extends Controller
                 $url,
                 [
                     'key' => env('GOOGLE_MAPS_API_KEY'),
-                    'city' => 'San Francisco',
                     'country' => 'United States of America',
-                    'state' => 'California',
                     'address' => $adress
                 ]
             );
             $location = ($response->collect()->first());
-            $location =  json_encode($location[0]['geometry']['location']);
-            $location_json =  response()->json(['location'=>$location]);
-            return $location_json->getData()->location;
+            if(empty($location[0])){
+                return json_encode([
+                    'lat'=> 0,
+                    'lng'=>0
+                ]);
+            }else {
+                $location =  json_encode($location[0]['geometry']['location']);
+                $location_json =  response()->json(['location'=>$location]);
+                return $location_json->getData()->location;
+               
+            }
 
         } catch (\Throwable $th) {
             throw $th;

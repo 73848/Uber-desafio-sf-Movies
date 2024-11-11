@@ -11,14 +11,14 @@ class SFFilmesControllerTest extends TestCase
   public function test_json_format_are_returned_on_geolocation_data_corretl(){
     $SfController = new SFFilmesController();
     $response = $SfController->getallDataFromApi(10);
-    var_dump($response);
     $this->assertJson($response);
 }
 
     public function test_json_format_are_returned_on_geolocation_data_corretly(){
         $SfController = new SFFilmesController();
-        $response = $SfController->getingGeoLocationFromAdress('Taylor and Jefferson Streets (Fishermans Wharf)');
+        $response = $SfController->getingGeoLocationFromAdress('100 St. Germain Avenue');
         $this->assertJson($response);
+        dump($response);
     }
     public function test_json_structure_are_returned_on_movies_informations_corretly(){
         $this

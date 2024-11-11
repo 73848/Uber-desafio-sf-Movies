@@ -144,16 +144,19 @@
             getAllMovies(' ').then((data) => {
                 var movies = JSON.parse(data.movies);
                 movies.forEach((movie) => {
-                    var marker = new google.maps.Marker({
-                        position: getLatLng(movie),
-                        label: {
-                                text: movie.title,
-                                color: "#191970",
-                                fontWeight: "bold",
-                                fontSize: "10px"
-                        }                
-                    });
-                    marker.setMap(map);
+                    if(movie.lat != 0){
+                        var marker = new google.maps.Marker({
+                            position: getLatLng(movie),
+                            label: {
+                                    text: movie.title,
+                                    color: "#191970",
+                                    fontWeight: "bold",
+                                    fontSize: "10px"
+                            }                
+                        });
+                        marker.setMap(map);
+                    }
+
                 })
             })
             $("#geolocation-form").on('submit', function(e) {
