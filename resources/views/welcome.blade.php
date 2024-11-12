@@ -34,13 +34,11 @@
         <div>
             <label for="">Search</label>
             <input type="text" id="search" name="search">
-            <div id="container">
-            </div>
+            <input type="hidden" id="address" name="adress">
+            <select name="" id="container"></select>
+            <button type="submit" id="buttonSubmit">Submit</button>
         </div>
-        <form action="/geolocation" id="geolocation-form" method="get">
-            <input type="hidden" id="search-location" name="search-location">
-            <button type="submit">Submit</button>
-        </form>
+       
         <div class="" id="info-box">
             <h2 id="informations-title"></h2>
             <p id="informations-paragaph"></p>
@@ -53,7 +51,7 @@
                 'csrftoken': '{{ csrf_token() }}'
             }
         });
-
+        
         $(document).on('click',"#result", function(title) {
             var value = $("#result").text();
             $("#search").val(value);
@@ -102,15 +100,21 @@
         
          function liveSearch(data){
             var movies = JSON.parse(data.movies);
+            let i = 0;
             movies.forEach(title => {
-                const newPara = $('<p>', {
-                    id: 'result',
-                    text: title.title
+                i++;
+                const newPara = $('<option/>', { //PAREI AQUI
+                    id: 'result'+i,
+                    name: "movieOptions",
+                    text: title.title,
+                    value: title.locations
             });
+
             $('#container').append(newPara);
-                $(document).on('click','#result', function() {
-                    $('#search-location').val(title.locations);
-                });
+            $(document).on('click','#result1', function() {
+                    let address = $("#result"+i).val();
+                    $('#search-location').val(address);
+            });
             });
         }
 
@@ -159,9 +163,15 @@
 
                 })
             })
-            $("#geolocation-form").on('submit', function(e) {
-                e.preventDefault(e)
-                var address = $('#search-location').val();
+// observar mudancas no codigo
+           $("#container").on('change', function()  { 
+                var selectedValue = $(this).val();
+                var selectedText = $(this).find('option:selected').text();
+                $("#search").val(selectedText)
+                $("#address").val(selectedValue)
+             })
+            $("#buttonSubmit").on('click', function() {
+                var address = $('#address').val();
                 console.log(address)
                 if (address != " ") {
                     searcMovies(address).then((data) => {
