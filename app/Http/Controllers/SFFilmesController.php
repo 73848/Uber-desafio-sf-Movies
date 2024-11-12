@@ -58,11 +58,13 @@ class SFFilmesController extends Controller
     }
     public function getMoviesInformations(Request $request){
         try {
-            $input = $request->validate(['movie'=>'required|string']);
+            $input = $request->validate(['movie'=>'required|string', 'address'=>'required|string']);
             $movieName = strip_tags($input['movie']);
+            $movieAddress = strip_tags($input['address']);
             $response = Http::timeout(5)->get('https://data.sfgov.org/resource/yitu-d5am.json?', [
                 '$$app_token' => env("SODA_API_KEY"),
-                'title' => $movieName
+                'title' => $movieName,
+                'locations'=>  $movieAddress
             ]);
             $movies = json_encode($response->json());
             return response()->json(['movies'=>$movies]); 

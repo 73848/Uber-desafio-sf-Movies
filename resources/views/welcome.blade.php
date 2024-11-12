@@ -77,13 +77,14 @@
             });
         };
 
-        function getInfoMovies(movie) {
+        function getInfoMovies(movie, address) {
             return $.ajax({
                 type: "GET",
                 url: '/movies/information',
                 dataType: "json",
                 data: {
-                    'movie': movie
+                    'movie': movie,
+                    'address':address
                 },
             });
           }
@@ -172,13 +173,14 @@
              })
             $("#buttonSubmit").on('click', function() {
                 var address = $('#address').val();
+                var name = $('#search').val();
                 console.log(address)
                 if (address != " ") {
                     searcMovies(address).then((data) => {
                         var movies = JSON.parse(data.movies);
                         movies.forEach(movie => {
                             const position = getLatLng(movie);
-                            getInfoMovies(movie.title).then((data)=>{
+                            getInfoMovies(name,address).then((data)=>{
                                 var infoMovie = JSON.parse(data.movies);
                                 infoMovie.forEach(element => {
                                     showingInformation(element);
