@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
+use Illuminate\Container\Attributes\Cache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache as FacadesCache;
 use Illuminate\Support\Facades\Http;
 
 class SFFilmesController extends Controller
@@ -52,8 +54,9 @@ class SFFilmesController extends Controller
         }
     }
     public function getAllMovies(){
-        $result = Movie::all();
-        $movies = json_encode($result);
+        $movies = FacadesCache::remember('movie-maps', 60*5, function(){
+           return json_encode(Movie::all());
+        });
         return response()->json(['movies'=>$movies]); 
     }
     public function getMoviesInformations(Request $request){
