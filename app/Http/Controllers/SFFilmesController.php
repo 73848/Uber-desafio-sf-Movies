@@ -6,6 +6,7 @@ use App\Models\Movie;
 use Illuminate\Container\Attributes\Cache;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache as FacadesCache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class SFFilmesController extends Controller
@@ -55,7 +56,7 @@ class SFFilmesController extends Controller
     }
     public function getAllMovies(){
         $movies = FacadesCache::remember('movie-maps', 60*5, function(){
-           return json_encode(Movie::all());
+           return json_encode(DB::select('SELECT * from movies'));
         });
         return response()->json(['movies'=>$movies]); 
     }
