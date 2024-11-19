@@ -14,6 +14,8 @@ $(document).on('click', "#result", function (title) {
     $("#search").submit();
 });
 
+// Aqui vem algumas funcoes de requisicoes ajax
+
 function searcMovies(search) {
     return $.ajax({
         type: "GET",
@@ -60,6 +62,7 @@ function liveSearch(data) {
     let i = 0;
     movies.forEach(title => {
         i++;
+        // cria um novo elemento do tipo option
         const newPara = $('<option/>', { //PAREI AQUI
             id: 'result' + i,
             name: "movieOptions",
@@ -81,6 +84,7 @@ function getLatLng(movie) {
         lng: movie.long
     };
 }
+// une as funcoes nescessárias para a funcionalidade liveSearch
 function ajaxSearchResult() {
     var search = $("#search").val();// valor do label
     if (search != '') {
@@ -98,13 +102,14 @@ $(document).ready(function () {
         ajaxSearchResult()
     });
 });
-
+// criacao do mapa
 function myMap() {
     var mapProp = {
         center: new google.maps.LatLng(37.7749, -122.4194),
         zoom: 18,
     };
     var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    // aqui é feita a distribuicao das marcacoes de todos os filmes no mapa
     getAllMovies(' ').then((data) => {
         var movies = JSON.parse(data.movies);
         movies.forEach((movie) => {
@@ -120,7 +125,6 @@ function myMap() {
                 });
                 marker.setMap(map);
             }
-
         })
     })
     // observar mudancas no codigo
@@ -135,12 +139,14 @@ function myMap() {
         var name = $('#search').val();
         console.log(address)
         if (address != " ") {
+            // aqui é feita a coleta de informacoes da API de filmes
             searcMovies(address).then((data) => {
                 var movies = JSON.parse(data.movies);
                 movies.forEach(movie => {
                     const position = getLatLng(movie);
                     getInfoMovies(name, address).then((data) => {
                         var infoMovie = JSON.parse(data.movies);
+                        // com os dados coletados, chama a funcao para criar interface de informacoes
                         infoMovie.forEach(element => {
                             showingInformation(element);
                         });
